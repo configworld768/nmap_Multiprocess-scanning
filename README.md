@@ -16,7 +16,10 @@ nmap Multi-process scanning masscan、nmap多进程扫描脚本<br>
 4、install httpx（https://github.com/projectdiscovery/httpx）<br>
    install tlsx (https://github.com/projectdiscovery/tlsx)<br>
 
-![image](https://github.com/bigzeroo/nmap_Multiprocess-scanning/blob/main/scan.png)
+![image](https://github.com/bigzeroo/nmap_Multiprocess-scanning/blob/main/scan.png)<br>
+
+![image](https://github.com/bigzeroo/nmap_Multiprocess-scanning/blob/main/nmap_masscan.png)
+
 
    
   
