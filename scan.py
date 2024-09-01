@@ -100,61 +100,57 @@ class GetWebInfo(object):
         ''' 
         获取http协议端口的title,状态码,ip对应的域名信息 
         '''
-        title1 = ''
-        status_code = ''
-        ip_domain = ''
-        first_url = ''
-        scheme = ''
-        location = ''
-        method = ''
-        content_type = ''
-        content_length = ''
+
+        info = {
+            'title1': '', 'status_code': '', 'ip_domain': '', 'first_url': '',
+            'scheme': '', 'location': '', 'method': '', 'content_type': '', 'content_length': ''
+        }
+
         httpx_json = result_dirs+'/'+'httpx.json' 
         subprocess.getstatusoutput('timeout 10 echo {}|httpx -tls-probe -json -o {}'.format(url,httpx_json))  
         if os.path.getsize(httpx_json):
             with open(httpx_json, 'r') as http_json:
                 http_lst = http_json.readlines()
                 log.info('http_lst: %s' % http_lst)
-                first_url = json.loads(http_lst[0])['url']
-                log.info('first_url: %s' % first_url)
+                info['first_url'] = json.loads(http_lst[0])['url']
+                log.info('first_url: %s' % info['first_url'])
                 for status in http_lst:
                     http_dict = json.loads(status)
                     log.info(http_dict)
-                    if 'tls-grab' in http_dict and 'dns_names' in http_dict['tls-grab'] and str(http_dict['tls-grab']['dns_names']) not in ip_domain:
-                        ip_domain = ip_domain + str(http_dict['tls-grab']['dns_names'])
+                    if 'tls-grab' in http_dict and 'dns_names' in http_dict['tls-grab'] and str(http_dict['tls-grab']['dns_names']) not in info['ip_domain']:
+                        info['ip_domain'] = info['ip_domain'] + str(http_dict['tls-grab']['dns_names'])
                     if 'title' in http_dict:  
-                        title1 = http_dict['title'] + ';' + title1
+                        info['title1'] = http_dict['title'] + ';' + info['title1']
                     if 'status-code' in http_dict:
-                        status_code = int(http_dict['status-code'])
+                        info['status_code'] = int(http_dict['status-code'])
 
                     if 'scheme' in http_dict.keys():
-                        scheme = http_dict['scheme'] + ';' + scheme
+                        info['scheme'] = http_dict['scheme'] + ';' + info['scheme']
                     if 'location' in http_dict.keys():
-                        location = http_dict['location'] + ';' + location
+                        info['location'] = http_dict['location'] + ';' + info['location']
                     if 'method' in http_dict.keys():
-                        method = http_dict['method'] + ';' + method
+                        info['method'] = http_dict['method'] + ';' + info['method']
                     if 'content-type' in http_dict.keys():
-                        content_type = http_dict['content-type'] + ';' + content_type
+                        info['content_type'] = http_dict['content-type'] + ';' + info['content_type']
                     if 'ontent-length' in http_dict.keys():
-                        content_length = http_dict['ontent-length'] + ';' + content_length
-
+                        info['content_length'] = http_dict['ontent-length'] + ';' + info['content_length']
 
                     if 'url' in http_dict and http_dict['url'] not in url:
                         if http_dict['url'] not in url_lst:
-                            url_lst.append(first_url)
+                            url_lst.append(info['first_url'])
                         url = url + ',' + http_dict['url']
-        return title1,status_code,ip_domain,first_url,scheme,location,method,content_type,content_length
+        return tuple(info.values())
 
     def check_tls(self,first_url):
         ''' 
         获取IP的证书相关信息,这里可以做证书过期监控 
         '''
-        tls_version = ''
-        domain_supplier = ''
-        cipher = ''
-        expire_date = ''
-        tls_type = ''
+        
         tlsx_json = result_dirs+'/'+'tlsx.json'   
+        tls_info = {
+            'tls_version': '', 'domain_supplier': '', 'cipher': '',
+            'expire_date': '', 'tls_type': ''
+        }
         subprocess.getstatusoutput('timeout 10 tlsx -u {} -json -o {} -silent'.format(first_url,tlsx_json))
         if os.path.getsize(tlsx_json):
             with open(tlsx_json, 'r') as tlsx_result:
@@ -163,18 +159,18 @@ class GetWebInfo(object):
                     tlsx_dict = json.loads(tls)
                     log.info(tlsx_dict)
                     if 'tls_version' in tlsx_dict:
-                        tls_version = tlsx_dict['tls_version']
+                        tls_info['tls_version'] = tlsx_dict['tls_version']
                     if 'issuer_dn' in tlsx_dict:
-                        domain_supplier = tlsx_dict['issuer_dn']
+                        tls_info['domain_supplier'] = tlsx_dict['issuer_dn']
                     elif 'subject_dn' in tlsx_dict:
-                        domain_supplier = tlsx_dict['subject_dn']   
+                        tls_info['domain_supplier'] = tlsx_dict['subject_dn']   
                     if 'cipher' in tlsx_dict:
-                        cipher = tlsx_dict['cipher']
+                        tls_info['cipher'] = tlsx_dict['cipher']
                     if 'not_after' in tlsx_dict:
-                        expire_date = tlsx_dict['not_after']
+                        tls_info['expire_date'] = tlsx_dict['not_after']
                     if 'self_signed' in tlsx_dict and tlsx_dict['self_signed'] == True:
-                        tls_type = '自签名证书' 
-        return tls_version,domain_supplier,cipher,expire_date,tls_type
+                        tls_info['tls_type'] = '自签名证书' 
+        return tuple(tls_info.values())
 
 
 def checkSshAuth(sship_port):
@@ -269,7 +265,8 @@ def check_vul_port(ip,nm_resultInfo,writer):
                                 port) + '\n' + '服务: ' + port_service + '\n' + '版本: ' + port_service + ' ' + port_version + '\n' + '与该IP相关联的域名信息: ' + str(domain_info) + '\n' + 'ip归属' + subprocess.getstatusoutput("curl cip.cc/{}|head -2|tail -1".format(ip))[1].split('\n')[-1].replace('\t','')
                             log.info(portinfo)
                             if (ip+':'+str(port)) not in white_port: 
-                                qiwei_alert.send_msg(portinfo)
+                                #qiwei_alert.send_msg(portinfo)
+                                print(1)
                                 
                         if nm_resultInfo['scan'][ip]['tcp'][port]['product'] == '' and port in vul_port and \
                                 nm_resultInfo['scan'][ip]['tcp'][port]['name'] in vul_service:
@@ -279,7 +276,8 @@ def check_vul_port(ip,nm_resultInfo,writer):
                                 port) + '\n' + '服务: ' + name + '\n' + '版本: ' + ' '  + '\n' + '与该IP相关联的域名信息: ' + str(domain_info) + '\n' + 'ip归属' + subprocess.getstatusoutput("curl cip.cc/{}|head -2|tail -1".format(ip))[1].split('\n')[-1].replace('\t','')
                             log.info(portinfo)
                             if (ip+':'+str(port)) not in white_port: 
-                                qiwei_alert.send_msg(portinfo)
+                                #qiwei_alert.send_msg(portinfo)
+                                print(2)
         
 
 class Scan(object):
