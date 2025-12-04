@@ -18,11 +18,14 @@ TLS 信息：使用 ssl 库提取 SSL/TLS 证书版本及过期时间。
 
 结果处理进程将所有扫描数据（IP、服务、产品版本、Web指纹等）统一写入 CSV 文件。
 
-内置高危规则匹配（如 Docker、Redis、MongoDB 等），一旦发现高危服务或端口，立即通过企业微信 Webhook 发送实时告警。
+内置高危规则匹配（如 Docker、Redis、MongoDB 等），一旦发现高危服务或端口，立即通过企业微信 Webhook 发送实时告警。<br>
+
 **运行环境**：
   Linux<br>
   Python 3.6以上
-
+  masscan 1.3.2 
+  nmap 7.93及以上
+  
 **安装masscan 1.3.2 及以上版本、nmap 7.93及以上**
 
 ## 3、python-nmap
