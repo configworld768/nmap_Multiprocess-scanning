@@ -1,0 +1,4 @@
+requests
+paramiko
+python-nmap
+beautifulsoup4
