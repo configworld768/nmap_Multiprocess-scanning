@@ -39,7 +39,7 @@ TLS 信息：使用 ssl 库提取 SSL/TLS 证书版本及过期时间。
     pip install -r requirements.txt
 ```
 
-## 3、python-nmap
+**多进程过程**
 
 ![image](https://github.com/bigzeroo/nmap_Multiprocess-scanning/blob/main/scan1.jpg)<br>
 ![image](https://github.com/bigzeroo/nmap_Multiprocess-scanning/blob/main/scan2.jpg)<br>
