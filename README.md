@@ -20,7 +20,7 @@ TLS 信息：使用 ssl 库提取 SSL/TLS 证书版本及过期时间。
 
 内置高危规则匹配（如 Docker、Redis、MongoDB 等），一旦发现高危服务或端口，立即通过企业微信 Webhook 发送实时告警。<br>
 
-**运行环境**：
+**运行环境**：<br>
   Linux、Windows<br>
   Python 3.6以上<br>
   masscan 1.3.2 <br>
@@ -39,7 +39,7 @@ TLS 信息：使用 ssl 库提取 SSL/TLS 证书版本及过期时间。
     pip install -r requirements.txt
 ```
 
-**多进程过程**
+**多进程扫描**
 
 ![image](https://github.com/bigzeroo/nmap_Multiprocess-scanning/blob/main/scan1.jpg)<br>
 ![image](https://github.com/bigzeroo/nmap_Multiprocess-scanning/blob/main/scan2.jpg)<br>
