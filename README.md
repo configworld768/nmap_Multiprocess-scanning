@@ -43,7 +43,6 @@ TLS 信息：使用 ssl 库提取 SSL/TLS 证书版本及过期时间。
 
 ![image](https://github.com/bigzeroo/nmap_Multiprocess-scanning/blob/main/scan.png)<br>
 
-![image](https://github.com/bigzeroo/nmap_Multiprocess-scanning/blob/main/nmap_masscan.png)
 
 
    
