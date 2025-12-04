@@ -21,12 +21,23 @@ TLS 信息：使用 ssl 库提取 SSL/TLS 证书版本及过期时间。
 内置高危规则匹配（如 Docker、Redis、MongoDB 等），一旦发现高危服务或端口，立即通过企业微信 Webhook 发送实时告警。<br>
 
 **运行环境**：
-  Linux<br>
-  Python 3.6以上
-  masscan 1.3.2 
-  nmap 7.93及以上
+  Linux、Windows<br>
+  Python 3.6以上<br>
+  masscan 1.3.2 <br>
+  nmap 7.93及以上<br>
   
-**安装masscan 1.3.2 及以上版本、nmap 7.93及以上**
+**使用方法**
+```
+  1、安装masscan、nmap
+    sudo apt-get update
+    sudo apt-get install nmap masscan
+
+  2、创建python3虚拟环境
+    python3 -m venv venv
+    cd venv/
+    source venv/bin/activate
+    pip install -r requirements.txt
+```
 
 ## 3、python-nmap
 
