@@ -41,7 +41,9 @@ TLS 信息：使用 ssl 库提取 SSL/TLS 证书版本及过期时间。
 
 ## 3、python-nmap
 
-![image](https://github.com/bigzeroo/nmap_Multiprocess-scanning/blob/main/2421764816631_.pic.jpg)<br>
+![image](https://github.com/bigzeroo/nmap_Multiprocess-scanning/blob/main/scan1.jpg)<br>
+![image](https://github.com/bigzeroo/nmap_Multiprocess-scanning/blob/main/scan2.jpg)<br>
+
 
 
 
